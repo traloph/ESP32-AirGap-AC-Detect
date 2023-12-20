@@ -1,0 +1,83 @@
+@startuml
+skinparam dpi 300
+
+skinparam backgroundColor #0d1117
+skinparam defaultFontColor #fbf1c7
+skinparam defaultFontSize 12
+skinparam sequenceArrowColor #458588
+
+skinparam sequenceLifeLineBorderColor #808080
+
+skinparam sequenceParticipantBorderColor #808080
+skinparam sequenceParticipantBackgroundColor #32302f
+
+skinparam sequenceGroupBorderColor #fe8019
+skinparam sequenceGroupBackgroundColor #32302f
+skinparam sequenceGroupHeaderFontColor #fe8019
+
+
+skinparam NoteBorderColor #fabd2f
+skinparam NoteFontColor #fabd2f
+skinparam NoteBackgroundColor transparent
+
+participant "LIS3MDL Mag Sensor" as Sensor
+participant "ESP32" as ESP32
+participant "FFT calculate_peak" as FFT
+
+participant "is_current_flowing" as curcond
+participant "Notification" as Notify
+
+activate ESP32  #83a598
+activate Sensor  #a89984
+
+ESP32 --> Notify: SSD1306 Screen boot info
+
+Sensor -> ESP32: Data Ready DRDY
+
+activate ESP32 #d79921
+note right of ESP32: lis3mdl_drdy_read_task
+
+ESP32  --> Sensor: fetch new data
+
+Sensor -> ESP32: mag data
+ESP32 -> ESP32: fill SAMPLE_SIZE with data
+
+ESP32 -> FFT: Compute FFT
+
+activate FFT #d79921
+
+FFT -> curcond: peak_amplitude & peak_frequency
+deactivate FFT
+activate curcond #d79921
+curcond --> ESP32: No Power flowing
+
+group AC Flowing
+curcond --> Notify: Audio AC start/stop
+
+deactivate curcond
+
+deactivate ESP32
+ESP32 --> Notify: Audio interval
+
+ESP32 -> ESP32: select_most_active_axis
+
+ESP32 --> Notify: selected_axis_char
+
+
+end
+
+ESP32 -> ESP32: calibrate_threshold_interrupt
+ESP32 -> Sensor: lis3mdl_set_int_config
+
+ESP32 --> Notify: threshold_value
+
+ESP32 -> ESP32: Enter Deep Sleep
+deactivate ESP32
+
+Sensor -> ESP32: INT threshold ext0_wakeup
+activate ESP32 #83a598
+
+ESP32 --> Notify: wake_count, pointless_wake_count (no AC)
+
+deactivate Sensor
+@enduml
