@@ -85,6 +85,7 @@ When no current is flowing the ESP32 is put into deep sleep. To be waken up when
 
 
 ## Work in Progress features
+- Better tracability of the modified LIS3MDL driver in use as well as the OLED driver (also modified).
 - Different sound in interval notification depending on mesured amplitude.
 - Auto-calibrate condition B (amplitude) & adaptive INT calibration.
 - Self-test with 50 Hz frequency injection and action if identification fails.
