@@ -19,6 +19,10 @@
 
 #define SHUTDOWN_PIN            (16)
 
+#define MIN_WATTAGE 30.0
+#define MAX_WATTAGE 3000.0
+#define MIN_FREQUENCY 261
+#define MAX_FREQUENCY 2000
 
 // Define melodies
 extern int melody_up[];
@@ -28,6 +32,7 @@ extern int melody_length;
 void init_audio(void);
 void play_tone(int freq);
 void play_melody(int *melody);
+void play_tone_based_on_wattage(float current_wattage);
 
 
 #endif

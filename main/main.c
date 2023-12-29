@@ -391,7 +391,8 @@ void check_power_flow_task(void *pvParameters) {
             vTaskDelay(30000 / portTICK_PERIOD_MS);
         }
         if (power_flowing) {
-            play_tone(TONE_E);
+            //play_tone(TONE_E);
+            play_tone_based_on_wattage(current_wattage);
         }
         vTaskDelay(1000 / portTICK_PERIOD_MS);
         }

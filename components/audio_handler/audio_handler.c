@@ -45,6 +45,20 @@ void play_tone(int freq)
     gpio_set_level(SHUTDOWN_PIN, 0);
 }
 
+void play_tone_based_on_wattage(float current_wattage) {
+    // Clamp current wattage within the defined range
+    if (current_wattage < MIN_WATTAGE) current_wattage = MIN_WATTAGE;
+    if (current_wattage > MAX_WATTAGE) current_wattage = MAX_WATTAGE;
+
+    // Map the current wattage to a frequency
+    int frequency = MIN_FREQUENCY + (int)((MAX_FREQUENCY - MIN_FREQUENCY) * 
+                (current_wattage - MIN_WATTAGE) / (MAX_WATTAGE - MIN_WATTAGE));
+
+    // Play the tone at the calculated frequency
+    play_tone(frequency);
+}
+
+
 void play_melody(int *melody){
     for (int i = 0; i < melody_length; i++)
     {
