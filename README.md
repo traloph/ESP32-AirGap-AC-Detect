@@ -9,8 +9,6 @@
 
 
 
-### Objective
-
 This project aims to be able to tell whether current is flowing through a cable (for example leading to a stove), and trigger audio or visual notification upon predefined states. These could include:
 
 - Current started, stopped.
